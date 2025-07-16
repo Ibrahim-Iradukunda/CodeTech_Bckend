@@ -44,4 +44,10 @@ def main():
     conn.close()
 
 if __name__ == "__main__":
-    main() 
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+    # Update users with empty name to use email prefix
+    cursor.execute("UPDATE users SET name = substr(email, 1, instr(email, '@')-1) WHERE name IS NULL OR name = '';")
+    conn.commit()
+    print("Updated users with empty name.")
+    conn.close() 
